@@ -1,15 +1,21 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Clause {
-    ArrayList<Literal> literals;
+    private ArrayList<Literal> literals = new ArrayList<>();
 
     Clause(){
-        this.literals = new ArrayList<>();
     }
 
     Clause(ArrayList<Literal> literals) {
         this.literals = literals;
+    }
+
+    Clause(int[] literals) {
+       for (int l : literals) {
+           this.literals.add(new Literal(l));
+       }
     }
 
     public boolean isEmpty(){
@@ -37,4 +43,20 @@ public class Clause {
     public int hashCode() {
         return Objects.hash(literals);
     }
+
+    @Override
+    public Clause clone(){
+        Clause clause = new Clause();
+        this.literals.forEach(l -> clause.addLiteral(l.clone()));
+        return clause;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        this.literals.forEach(l -> s.append(l.toString()).append(" "));
+        return s.toString().trim();
+    }
+
+
 }

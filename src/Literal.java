@@ -36,4 +36,14 @@ public class Literal {
     public int hashCode() {
         return Objects.hash(this.val);
     }
+
+    @Override
+    public Literal clone(){
+        return new Literal(this.val);
+    }
+
+    @Override
+    public String toString(){
+        return "" + this.val;
+    }
 }

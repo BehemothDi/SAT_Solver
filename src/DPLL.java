@@ -10,7 +10,7 @@ public class DPLL {
 
         Literal l = function.chooseLiteral();
 
-        return recursive(function.addClause(l)) || recursive(function.addClause(l.invert()));
+        return recursive(function.addClause(l).clone()) || recursive(function.addClause(l.invert()).clone());
     }
 
 
