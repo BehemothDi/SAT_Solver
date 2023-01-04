@@ -3,9 +3,12 @@ public class DPLL {
 
     public static boolean recursive(Function function){
         function.performUnitPropagation();
-        function.processPureLiterals();
+       // function.processPureLiterals();
 
-        if (function.isEmpty()) return true;
+        if (function.isEmpty()) {
+            System.out.println(function.getLiterals());
+            return true;
+        }
         if (function.hasEmptyClause()) return false;
 
         Literal l = function.chooseLiteral();

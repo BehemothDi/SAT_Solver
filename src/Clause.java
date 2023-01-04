@@ -18,8 +18,12 @@ public class Clause {
        }
     }
 
+    public ArrayList<Literal> getLiterals() {
+        return literals;
+    }
+
     public boolean isEmpty(){
-        return literals.size() == 0;
+        return this.size() == 0;
     }
 
     public void addLiteral(Literal l){
@@ -28,6 +32,10 @@ public class Clause {
 
     public void removeLiteral(Literal l){
         this.literals.removeIf(l::equals);
+    }
+
+    public int size(){
+        return this.literals.size();
     }
 
     @Override
@@ -55,8 +63,11 @@ public class Clause {
     public String toString(){
         StringBuilder s = new StringBuilder();
         this.literals.forEach(l -> s.append(l.toString()).append(" "));
-        return s.toString().trim();
+        return "{" + s.toString().trim() + "}";
     }
 
-
+    public boolean contains(Literal literal) {
+        for (Literal l : this.literals) if (l.equals(literal)) return true;
+        return false;
+    }
 }

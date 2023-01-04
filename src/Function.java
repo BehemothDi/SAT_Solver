@@ -1,11 +1,13 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Function {
 
     private ArrayList<Clause> clauses = new ArrayList<>();
+    private ArrayList<Literal> literals = new ArrayList<>();
 
     Function(){
-
     }
 
     Function(ArrayList<Clause> clauses){
@@ -14,6 +16,10 @@ public class Function {
 
     public boolean isEmpty(){
         return clauses.size() == 0;
+    }
+
+    public ArrayList<Literal> getLiterals() {
+        return literals;
     }
 
     public boolean hasEmptyClause(){
@@ -39,7 +45,33 @@ public class Function {
     }
 
     public void performUnitPropagation() {
+        while (true) {
+            Clause unitClause = this.findUnitClause();
+            Literal unitLiteral, inverseUnitLiteral;
 
+            if (unitClause != null) {
+                unitLiteral = unitClause.getLiterals().get(0);
+                literals.add(unitLiteral.clone());
+            }
+            else break;
+
+
+            inverseUnitLiteral = unitLiteral.clone().invert();
+
+            Function temp = this.clone();
+
+            this.clauses.forEach(clause -> {
+                if (clause.contains(unitLiteral)) temp.removeClause(clause);
+            });
+            this.clauses = temp.clauses;
+
+            this.clauses.forEach(clause -> clause.removeLiteral(inverseUnitLiteral));
+        }
+    }
+
+    private Clause findUnitClause() {
+        for (Clause c : clauses) if (c.size() == 1) return c;
+        return null;
     }
 
     public void processPureLiterals() {
@@ -47,7 +79,9 @@ public class Function {
     }
 
     public Literal chooseLiteral() {
-        return null;
+        Literal l = this.clauses.get(0).getLiterals().get(0);
+        literals.add(l);
+        return l;
     }
 
     public void removeLiteral(Literal literal){
